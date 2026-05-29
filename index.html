@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <title>Flint's Butchers Block | Venetian Village, Nassau</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #2a2418;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      line-height: 1.45;
+      color: #1e1b16;
+    }
+
+    /* main container with white-washed brick */
+    .main-wrapper {
+      max-width: 1300px;
+      margin: 2rem auto;
+      background: #fef7e8;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* subtle brick texture overlay */
+    .brick-overlay {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" opacity="0.06"><path fill="none" stroke="%238a6e4b" stroke-width="0.8" d="M0 10 L120 10 M0 30 L120 30 M0 50 L120 50 M15 0 L15 10 M45 0 L45 10 M75 0 L75 10 M105 0 L105 10 M30 10 L30 30 M60 10 L60 30 M90 10 L90 30 M0 30 L0 50 M30 30 L30 50 M60 30 L60 50 M90 30 L90 50 M120 30 L120 50 M15 50 L15 60 M45 50 L45 60 M75 50 L75 60 M105 50 L105 60"/></svg>');
+      background-repeat: repeat;
+      background-size: 60px 30px;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .relative-container {
+      position: relative;
+      z-index: 2;
+      background: rgba(254, 247, 232, 0.96);
+    }
+
+    /* header */
+    header {
+      text-align: center;
+      padding: 2rem 2rem 1rem 2rem;
+      border-bottom: 2px solid #e2cfb5;
+    }
+
+    .shop-name {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      font-family: 'Georgia', serif;
+      color: #2d2b26;
+    }
+
+    .shop-name span {
+      color: #8b5a2b;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: #6f5a3e;
+      margin-top: 0.25rem;
+      font-style: italic;
+    }
+
+    /* navigation */
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #f4ede1;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e2d5c0;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.2s;
+      color: #4a3b28;
+      background: #fef7e8;
+    }
+
+    .nav-btn.active {
+      background: #2d2b26;
+      color: #f3deba;
+    }
+
+    .nav-btn:hover:not(.active) {
+      background: #e9ddcc;
+    }
+
+    /* page container */
+    .page {
+      display: none;
+      padding: 2rem 2rem 2rem 2rem;
+      animation: fade 0.25s ease;
+    }
+
+    .page.active-page {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(5px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* homepage specific layout */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.4rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border: 1px solid #ede0ce;
+    }
+
+    .service-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #3b2c1e;
+      margin-bottom: 0.75rem;
+      border-left: 3px solid #c5a059;
+      padding-left: 0.75rem;
+    }
+
+    .service-card p, .service-card ul {
+      font-size: 0.9rem;
+      color: #4c3b28;
+    }
+
+    .service-card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .service-card li {
+      margin-bottom: 0.3rem;
+      padding-left: 1rem;
+      position: relative;
+    }
+    .service-card li::before {
+      content: "•";
+      color: #c5a059;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .contact-block {
+      background: #2d2b26;
+      color: #ebd5b3;
+      border-radius: 28px;
+      padding: 1.5rem;
+      margin: 2rem 0 1.5rem;
+      text-align: center;
+    }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 0.75rem;
+      font-size: 1rem;
+    }
+    .contact-row a {
+      color: #f3deba;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .insta-handle {
+      font-family: monospace;
+      letter-spacing: 0.5px;
+    }
+
+    /* featured meals (inspo) */
+    .inspo-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      margin: 1.8rem 0 1rem;
+    }
+    .inspo-card {
+      background: white;
+      border-radius: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      overflow: hidden;
+      border: 1px solid #e8dac8;
+      transition: all 0.1s ease;
+    }
+    .inspo-icon {
+      flex: 0 0 100px;
+      background: #f2e8da;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .inspo-content {
+      flex: 4;
+      padding: 1.2rem 1.2rem 1.2rem 0;
+    }
+    .inspo-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2d2b26;
+      letter-spacing: -0.2px;
+    }
+    .inspo-desc {
+      font-size: 0.9rem;
+      color: #5e4a30;
+      margin: 0.5rem 0;
+    }
+    .meal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .meal-tag {
+      background: #f3ede4;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #6f5436;
+    }
+    .view-btn {
+      background: none;
+      border: 1.5px solid #c5a059;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8b6942;
+      margin-top: 0.6rem;
+      cursor: pointer;
+      transition: 0.1s;
+      display: inline-block;
+    }
+    .view-btn:hover {
+      background: #c5a05920;
+    }
+
+    /* meal detail pages (eastern, western, tierra) */
+    .meal-detail-card {
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid #ede0ce;
+      margin-bottom: 1.5rem;
+    }
+    .meal-header {
+      padding: 1.5rem 1.8rem 0 1.8rem;
+    }
+    .meal-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #3b2c1e, #8b5a2b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .meal-body {
+      padding: 0.5rem 1.8rem 1.8rem 1.8rem;
+    }
+    .ingredient-badge {
+      background: #f3ede4;
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .stat-badge {
+      background: #e9ddcc;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      display: inline-block;
+      margin-right: 0.8rem;
+    }
+    footer {
+      background: #1f1d19;
+      color: #bcae92;
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.75rem;
+      border-top: 1px solid #c5a059;
+    }
+    hr {
+      margin: 1rem 0;
+      border-color: #e2cfb5;
+    }
+    @media (max-width: 680px) {
+      .page { padding: 1.2rem; }
+      .shop-name { font-size: 2.2rem; }
+      .inspo-card { flex-direction: column; }
+      .inspo-content { padding: 0 1rem 1rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="main-wrapper">
+  <div class="brick-overlay"></div>
+  <div class="relative-container">
+    <header>
+      <div class="shop-name">FLINT'S <span>BUTCHERS BLOCK</span></div>
+        <div class="tagline">Venetian Village, Nassau — Since day one, quality you can trust.</div>
+          </header>
+          
+          <div class="nav-links">
+            <button class="nav-btn" data-page="home">HOME</button>
+              <button class="nav-btn" data-page="eastern">EASTERN TIME ZONE</button>
+                <button class="nav-btn" data-page="western">ANCHORAGE → PUNTA ARENAS</button>
+                  <button class="nav-btn" data-page="tierra">TIERRA DEL FUEGO</button>
+                    </div>
+                    
+                    <!-- ========== HOMEPAGE ========= -->
+                      <div id="home-page" class="page">
+                        <!-- services exactly as on business card -->
+                        <div class="services-grid">
+                          <div class="service-card">
+                            <h3>🥩 Fresh Cuts</h3>
+                            <p>Beef, pork, chicken, lamb & more — grass-fed & Wagyu options available. Custom & specialty cuts made to order.</p>
+                            </div>
+                            <div class="service-card">
+                              <h3>🐟 Seafood & More</h3>
+                              <p>Fresh seafood, premium cheeses & fine wines. The perfect pairing for any meal.</p>
+                              </div>
+                              <div class="service-card">
+                                <h3>🐾 For Your Pup</h3>
+                                <p>Specialty dog food & treats — because family includes the four‑legged ones.</p>
+                                </div>
+                                <div class="service-card">
+                                  <h3>🍴 Grab & Go</h3>
+                                  <p>Grab‑and‑go meals, retail & wholesale. Yacht provisions, hotels, restaurants & private functions.</p>
+                                  </div>
+                                  </div>
+                                  
+                                  <!-- contact block from card -->
+                                  <div class="contact-block">
+                                    <div style="font-size: 1.3rem; font-weight: 500;">📞 1-242-436-0431</div>
+                                      <div class="contact-row">
+                                        <span>📧 fbbbahamas@gmail.com</span>
+                                        <span class="insta-handle">📸 @flintsbutchersblock</span>
+                                          </div>
+                                          <div style="margin-top: 0.5rem;">📍 Venetian Village, Nassau, The Bahamas</div>
+                                            <div style="margin-top: 0.8rem; font-size: 0.8rem;">Open Mon–Sat | Wholesale & yacht provision experts</div>
+                                              </div>
+                                              
+                                              <!-- "From our case" inspirational meals section (teasers) -->
+                                              <h2 style="font-size: 1.6rem; font-weight: 600; margin: 1rem 0 0.5rem; color:#2d2b26;">From our case — three ways to cook the coastline</h2>
+                                                <p style="margin-bottom: 1rem; color: #5e4a30;">Inspired by the Atlantic, the Pacific, and the bottom of the map. All ingredients waiting for you at Flint's.</p>
+      <div class="inspo-grid">
+        <div class="inspo-card">
+          <div class="inspo-icon">⚓🌊</div>
+          <div class="inspo-content">
+            <div class="inspo-title">EASTERN TIME ZONE</div>
+            <div class="inspo-desc">Maine lobster + Bahamian crawfish. Steamed & grilled, with citrus, peas & rice. Two tails, one plate, zero flights.</div>
+            <div class="meal-tags"><span class="meal-tag">lobster tails</span><span class="meal-tag">crawfish</span><span class="meal-tag">asparagus</span><span class="meal-tag">peas & rice</span></div>
+            <button class="view-btn" data-nav="eastern">view full meal →</button>
+          </div>
+        </div>
+        <div class="inspo-card">
+          <div class="inspo-icon">🗻🐟</div>
+          <div class="inspo-content">
+            <div class="inspo-title">ANCHORAGE TO PUNTA ARENAS</div>
+            <div class="inspo-desc">Peruvian scallops + Alaskan salmon. Wood plank, avocado crema, pickled rhubarb, and a Chilean pinot sauce.</div>
+            <div class="meal-tags"><span class="meal-tag">scallops</span><span class="meal-tag">salmon</span><span class="meal-tag">avocado crema</span><span class="meal-tag">rhubarb</span></div>
+            <button class="view-btn" data-nav="western">view full meal →</button>
+          </div>
+        </div>
+        <div class="inspo-card">
+          <div class="inspo-icon">🔥🧊</div>
+          <div class="inspo-content">
+            <div class="inspo-title">TIERRA DEL FUEGO</div>
+            <div class="inspo-desc">Chilean sea bass + Patagonia-inspired beef. Chimichurri with a Brazilian touch, calafate berry finish.</div>
+            <div class="meal-tags"><span class="meal-tag">sea bass</span><span class="meal-tag">beef tenderloin</span><span class="meal-tag">chimichurri</span><span class="meal-tag">calafate</span></div>
+            <button class="view-btn" data-nav="tierra">view full meal →</button>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center; margin: 1.5rem 0 0.2rem; font-style: italic; color:#8b6942;">“You don’t need a passport. You need our address.”</div>
+    </div>
+
+    <!-- ========== EASTERN PAGE ========= -->
+    <div id="eastern-page" class="page">
+      <div class="meal-detail-card">
+        <div class="meal-header"><h2>EASTERN TIME ZONE</h2></div>
+        <div class="meal-body">
+          <div><span class="stat-badge">⏱️ 25 min</span><span class="stat-badge">🍽️ 2 people</span><span class="stat-badge">🔥 easy / immersion blender trick</span></div>
+          <p style="margin: 1rem 0;"><strong>Maine lobster + Bahamian crawfish</strong> — steamed Maine, grilled spiny tail, united by citrus, compound butter, and peas & rice.</p>
+          <div><strong>From our case:</strong></div>
+          <div style="margin: 0.5rem 0 0.8rem;">
+            <span class="ingredient-badge">Maine lobster tail</span><span class="ingredient-badge">Bahamian crawfish tail</span><span class="ingredient-badge">asparagus (NY)</span>
+            <span class="ingredient-badge">pigeon peas</span><span class="ingredient-badge">goat pepper (Andros)</span><span class="ingredient-badge">freerange eggs</span><span class="ingredient-badge">thyme</span>
+          </div>
+          <div class="quote" style="border-left: 4px solid #c5a059; padding-left: 1rem; margin: 1rem 0; color:#5f4b2e;">“Forget Netflix & chill — we have steam & grill.” Two contrasting lobsters, one unforgettable plate.</div>
+          <p><strong>💡 The move:</strong> Hollandaise with an immersion blender (ask us for the trick). Serve with rice, a squeeze of citrus, and the confidence of a yacht chef.</p>
+          <p style="margin-top: 1rem;"><em>All ingredients available now at Flint’s Butchers Block — frozen tails, fresh produce, and the best butter in town.</em></p>
+          <button class="view-btn" data-nav="home" style="margin-top: 0.8rem;">← back to home</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== WESTERN PAGE ========= -->
+    <div id="western-page" class="page">
+      <div class="meal-detail-card">
+        <div class="meal-header"><h2>ANCHORAGE TO PUNTA ARENAS</h2></div>
+        <div class="meal-body">
+          <div><span class="stat-badge">⏱️ 35 min</span><span class="stat-badge">🍽️ 2 people</span><span class="stat-badge">🔥 medium / triple stripe sauce</span></div>
+          <p style="margin: 1rem 0;"><strong>Peruvian scallops + Alaskan salmon (plank method)</strong> — seared scallops, wood‑fired salmon, Miner's lettuce, quick‑pickled WA rhubarb, Mexican avocado crema, and a Chilean pinot noir pan sauce.</p>
+                                                  <div><strong>From our case & produce aisle:</strong></div>
+                                                  <div style="margin: 0.5rem 0 0.8rem;">
+                                                    <span class="ingredient-badge">scallops (fresh)</span><span class="ingredient-badge">salmon fillet</span><span class="ingredient-badge">avocado</span>
+                                                      <span class="ingredient-badge">rhubarb</span><span class="ingredient-badge">Miner's lettuce</span><span class="ingredient-badge">Chilean pinot noir</span>
+          </div>
+          <div class="quote" style="border-left: 4px solid #c5a059; padding-left: 1rem; margin: 1rem 0;">“Mexican flag in the middle — green crema, white butter, red wine reduction. No passport required.”</div>
+          <p><strong>🔥 The plating secret:</strong> squeeze bottles = perfect stripes. The wine in the pan echoes what’s in your glass.</p>
+          <p style="margin-top: 1rem;"><em>Ask us about wood chips for the salmon, and pickling tips for the rhubarb. We’ll set you up.</em></p>
+          <button class="view-btn" data-nav="home" style="margin-top: 0.8rem;">← back to home</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TIERRA DEL FUEGO PAGE ========= -->
+    <div id="tierra-page" class="page">
+      <div class="meal-detail-card">
+        <div class="meal-header"><h2>TIERRA DEL FUEGO</h2></div>
+        <div class="meal-body">
+          <div><span class="stat-badge">⏱️ 30 min</span><span class="stat-badge">🍽️ 2 people</span><span class="stat-badge">🔥 medium / inspired by Patagonia</span></div>
+          <p style="margin: 1rem 0;"><strong>Chilean sea bass + Patagonia‑inspired beef</strong> — buttery sea bass, grass‑fed style beef, Brazilian‑leaning chimichurri, and a whisper of calafate berry.</p>
+          <div><strong>Featured cuts:</strong></div>
+          <div style="margin: 0.5rem 0 0.8rem;">
+            <span class="ingredient-badge">Chilean sea bass</span><span class="ingredient-badge">beef tenderloin / sirloin</span>
+            <span class="ingredient-badge">chimichurri ingredients</span><span class="ingredient-badge">calafate (berry or drizzle)</span><span class="ingredient-badge">smoked salt</span>
+          </div>
+          <div class="quote" style="border-left: 4px solid #c5a059; padding-left: 1rem; margin: 1rem 0;">“Surf & turf at the bottom of the map. The calafate legend says you’ll return to Patagonia — or at least to Flint’s.”</div>
+          <p><strong>🧂 Pro tip:</strong> Chimichurri gets a Brazilian spin with a touch of malagueta or lime. Sea bass gets a hard sear, beef rests in its own glory. Calafate dot = optional but unforgettable.</p>
+          <p><em>“Inspired by” is our promise: whether the beef comes from Texas or Argentina, the flavor travels to the Strait of Magellan.</em></p>
+          <button class="view-btn" data-nav="home" style="margin-top: 0.8rem;">← back to home</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div>FLINT'S BUTCHERS BLOCK — Venetian Village, Nassau, The Bahamas</div>
+                                                        <div style="margin-top: 0.3rem;">📞 1-242-436-0431 | 📧 fbbbahamas@gmail.com | @flintsbutchersblock</div>
+                                                          <div style="margin-top: 0.5rem; font-size: 0.7rem;">Wholesale, yacht provisions, custom cuts — we deliver excellence to your galley or table.</div>
+                                                            </footer>
+                                                            </div>
+                                                            </div>
+                                                            
+                                                            <script>
+                                                            (function() {
+                                                              // pages
+                                                              const pages = {
+                                                                home: document.getElementById('home-page'),
+                                                                eastern: document.getElementById('eastern-page'),
+                                                                western: document.getElementById('western-page'),
+                                                                tierra: document.getElementById('tierra-page')
+                                                              };
+                                                              const buttons = document.querySelectorAll('.nav-btn');
+                                                              
+                                                              function activatePage(pageId) {
+                                                                Object.keys(pages).forEach(id => {
+                                                                  if (pages[id]) pages[id].classList.remove('active-page');
+                                                                });
+                                                                if (pages[pageId]) pages[pageId].classList.add('active-page');
+                                                                
+                                                                buttons.forEach(btn => {
+                                                                  btn.classList.remove('active');
+                                                                  const btnPage = btn.getAttribute('data-page');
+                                                                  if (btnPage === pageId) btn.classList.add('active');
+                                                                });
+                                                              }
+                                                              
+                                                              // attach nav buttons
+                                                              buttons.forEach(btn => {
+                                                                btn.addEventListener('click', (e) => {
+                                                                  const pageId = btn.getAttribute('data-page');
+                                                                  if (pageId && pages[pageId]) activatePage(pageId);
+                                                                });
+                                                              });
+                                                              
+                                                              // any "view-btn" that has data-nav attribute (home page previews, back buttons)
+                                                              document.body.addEventListener('click', (e) => {
+                                                                const target = e.target.closest('.view-btn');
+                                                                if (target && target.getAttribute('data-nav')) {
+                                                                  const dest = target.getAttribute('data-nav');
+                                                                  if (pages[dest]) activatePage(dest);
+                                                                }
+                                                              });
+                                                              
+                                                              // default to home
+                                                              activatePage('home');
+                                                            })();
+                                                          </script>
+                                                            </body>
+                                                            </html>
